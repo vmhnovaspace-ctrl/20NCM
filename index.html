@@ -740,7 +740,7 @@ tr:hover td{background:#F8FBFF}
 <div class="toast" id="toast"></div>
 
 <script>
-var API_URL = 'https://script.google.com/macros/s/AKfycbzevde0uZxQJ7RPe_lkAdycYuv0iY96wQ4QxlqyJjJj0SuXNKqm9C4MMfzKBUsADVs/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycbw9-pWZdqggVOCFXUZbhmQ39ah-NnsaPFhBn0k3mC3cqt5GjyQsgVOGTrI5FDuQDqOV/exec';
 var SECRET_KEY = 'hhhome2026';
 var CACHE_KEY = 'hhhome_cache_v19';
 var CACHE_TTL = 5 * 60 * 1000; // 5 phút
@@ -1041,20 +1041,20 @@ function renderT1() {
     var dot=moi>0?'dot-g':'dot-a';
     html+='<tr>';
     html+='<td class="l"><div class="phong-badge"><span class="dot '+dot+'"></span>'+esc(r.phong)+'</div></td>';
-    html+='<td><input class="ic sm'+(STATE.editedCells[r.phong+'_so_nguoi']!==undefined?' changed':'')+'" type="number" value="'+sn+'" data-phong="'+esc(r.phong)+'" data-field="so_nguoi" oninput="onEditCell(this)" /></td>';
+    html+='<td><input class="ic sm'+(STATE.editedCells[r.phong+'_so_nguoi']!==undefined?' changed':'')+'" type="text" inputmode="numeric" value="'+sn+'" data-phong="'+esc(r.phong)+'" data-field="so_nguoi" oninput="onEditCell(this)" onfocus="this.select()" /></td>';
     html+='<td class="v-mute">'+fmtOrZero(r.dien_cu)+'</td>';
-    html+='<td><input class="ic md'+(STATE.editedCells[r.phong+'_dien_moi']!==undefined?' changed':'')+'" type="number" value="'+(moi||'')+'" placeholder="—" data-phong="'+esc(r.phong)+'" data-field="dien_moi" oninput="onEditCell(this)" /></td>';
+    html+='<td><input class="ic md'+(STATE.editedCells[r.phong+'_dien_moi']!==undefined?' changed':'')+'" type="text" inputmode="numeric" value="'+(moi?moi.toLocaleString('vi-VN'):'')+'" placeholder="—" data-phong="'+esc(r.phong)+'" data-field="dien_moi" oninput="onEditCell(this)" onfocus="this.select()" /></td>';
     html+='<td class="'+(tieu?'v-elec':'v-mute')+'">'+(tieu?tieu+' số':'—')+'</td>';
-    html+='<td><input class="ic md'+(STATE.editedCells[r.phong+'_don_gia_dien']!==undefined?' changed':'')+'" type="number" value="'+dgd+'" data-phong="'+esc(r.phong)+'" data-field="don_gia_dien" oninput="onEditCell(this)" /></td>';
+    html+='<td><input class="ic md'+(STATE.editedCells[r.phong+'_don_gia_dien']!==undefined?' changed':'')+'" type="text" inputmode="numeric" value="'+dgd.toLocaleString('vi-VN')+'" data-phong="'+esc(r.phong)+'" data-field="don_gia_dien" oninput="onEditCell(this)" onfocus="this.select()" /></td>';
     html+='<td class="v-tdien">'+fmtOrZero(tdien)+'</td>';
-    html+='<td><input class="ic md'+(STATE.editedCells[r.phong+'_don_gia_nuoc']!==undefined?' changed':'')+'" type="number" value="'+dgn+'" data-phong="'+esc(r.phong)+'" data-field="don_gia_nuoc" oninput="onEditCell(this)" /></td>';
+    html+='<td><input class="ic md'+(STATE.editedCells[r.phong+'_don_gia_nuoc']!==undefined?' changed':'')+'" type="text" inputmode="numeric" value="'+dgn.toLocaleString('vi-VN')+'" data-phong="'+esc(r.phong)+'" data-field="don_gia_nuoc" oninput="onEditCell(this)" onfocus="this.select()" /></td>';
     html+='<td class="v-water">'+fmtOrZero(tnuoc)+'</td>';
-    html+='<td><input class="ic md'+(STATE.editedCells[r.phong+'_phi_dv']!==undefined?' changed':'')+'" type="number" value="'+pdv+'" data-phong="'+esc(r.phong)+'" data-field="phi_dv" oninput="onEditCell(this)" /></td>';
+    html+='<td><input class="ic md'+(STATE.editedCells[r.phong+'_phi_dv']!==undefined?' changed':'')+'" type="text" inputmode="numeric" value="'+pdv.toLocaleString('vi-VN')+'" data-phong="'+esc(r.phong)+'" data-field="phi_dv" oninput="onEditCell(this)" onfocus="this.select()" /></td>';
     html+='<td class="v-mute">'+fmtOrZero(pdv)+'</td>';
-    html+='<td><input class="ic sm'+(STATE.editedCells[r.phong+'_xe_sl']!==undefined?' changed':'')+'" type="number" value="'+xesl+'" data-phong="'+esc(r.phong)+'" data-field="xe_sl" oninput="onEditCell(this)" /></td>';
+    html+='<td><input class="ic sm'+(STATE.editedCells[r.phong+'_xe_sl']!==undefined?' changed':'')+'" type="text" inputmode="numeric" value="'+xesl+'" data-phong="'+esc(r.phong)+'" data-field="xe_sl" oninput="onEditCell(this)" onfocus="this.select()" /></td>';
     html+='<td class="v-xe">'+fmtOrZero(txe)+'</td>';
-    html+='<td><input class="ic md'+(STATE.editedCells[r.phong+'_phi_khac']!==undefined?' changed':'')+'" type="number" value="'+(phk||'')+'" placeholder="0" data-phong="'+esc(r.phong)+'" data-field="phi_khac" oninput="onEditCell(this)" /></td>';
-    html+='<td><input class="ic lg'+(STATE.editedCells[r.phong+'_gia_phong']!==undefined?' changed':'')+'" type="number" value="'+gp+'" data-phong="'+esc(r.phong)+'" data-field="gia_phong" oninput="onEditCell(this)" /></td>';
+    html+='<td><input class="ic md'+(STATE.editedCells[r.phong+'_phi_khac']!==undefined?' changed':'')+'" type="text" inputmode="numeric" value="'+(phk?phk.toLocaleString('vi-VN'):'')+'" placeholder="0" data-phong="'+esc(r.phong)+'" data-field="phi_khac" oninput="onEditCell(this)" onfocus="this.select()" /></td>';
+    html+='<td><input class="ic lg'+(STATE.editedCells[r.phong+'_gia_phong']!==undefined?' changed':'')+'" type="text" inputmode="numeric" value="'+gp.toLocaleString('vi-VN')+'" data-phong="'+esc(r.phong)+'" data-field="gia_phong" oninput="onEditCell(this)" onfocus="this.select()" /></td>';
     html+='<td class="v-tong">'+fmtOrZero(tong)+'</td>';
     html+='<td>'+(anyChanged?'<button class="btn-luu" onclick="luuMotPhong(\''+esc(r.phong)+'\')">Lưu</button>':'')+'</td>';
     html+='</tr>';
@@ -1065,7 +1065,9 @@ function renderT1() {
 
 function onEditCell(el) {
   var phong=el.getAttribute('data-phong'), field=el.getAttribute('data-field');
-  STATE.editedCells[phong+'_'+field]=parseInt(el.value)||0;
+  // Bỏ dấu chấm/phẩy để lấy số thô
+  var raw = parseInt((el.value||'').replace(/[^0-9]/g,''))||0;
+  STATE.editedCells[phong+'_'+field]=raw;
   el.classList.add('changed');
   renderT1();
   document.getElementById('p1-luu-ca').style.display=Object.keys(STATE.editedCells).length?'':'none';
