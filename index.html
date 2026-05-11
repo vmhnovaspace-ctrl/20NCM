@@ -760,7 +760,7 @@ tr:hover td{background:#F8FBFF}
 <div class="toast" id="toast"></div>
 
 <script>
-var API_URL = 'https://script.google.com/macros/s/AKfycbyUxFB_NgzeZZ3mYbuX3p3-QJcjmbJHYbYkfUCdLmxssyteD44uNgDCIkZ-IGQ2tCc/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycbwMBKcAbE2qxpwsVNq1Pz-DaKdAj7XnvbeYoCzu-5Xb6bk2nLyjNkC7ze1h1pGMp_pJ/exec';
 var SECRET_KEY = 'hhhome2026';
 var CACHE_KEY = 'hhhome_cache_v19';
 var CACHE_TTL = 5 * 60 * 1000; // 5 phút
@@ -1382,8 +1382,10 @@ function renderT3() {
     var rowCls=t==='du'?'row-du':t==='thieu'?'row-thieu':'';
     var dotCls=t==='du'?'dot-g':t==='thieu'?'dot-a':'dot-r';
     var tagH=t==='du'?'<span class="tag tag-du">Đủ</span>':t==='thieu'?'<span class="tag tag-thieu">Thiếu</span>':'<span class="tag tag-chua">Chưa</span>';
-    var tm=r.da_thu===0?r.tong_cong:Math.max(0,r.da_thu-(r.chuyen_khoan||0));
-    var tmTxt=r.da_thu===0?'<span class="v-mute" title="Mặc định = Tổng">'+fmtOrZero(r.tong_cong)+'*</span>':'<span class="v-green">'+fmtOrZero(tm)+'</span>';
+    var ckForTm=r.chuyen_khoan||0;
+    var tm=r.da_thu===0?Math.max(0,r.tong_cong-ckForTm):Math.max(0,r.da_thu-ckForTm);
+    var tmBase=r.da_thu===0?r.tong_cong:r.da_thu;
+    var tmTxt=ckForTm>0?'<span class="v-green">'+fmtOrZero(tm)+'</span>':(r.da_thu===0?'<span class="v-mute" title="Mặc định = Tổng">'+fmtOrZero(r.tong_cong)+'*</span>':'<span class="v-green">'+fmtOrZero(tm)+'</span>');
     var ckVal=r.chuyen_khoan||0;
     // Ô nhập CK inline
     var ckInp='<input class="ck-inp'+(ckVal?' has-val':'')+'" type="text" inputmode="numeric" placeholder="—" value="'+(ckVal?ckVal.toLocaleString('vi-VN'):'')+'" data-phong="'+esc(r.phong)+'" data-idx="'+idx+'" oninput="onCKInput(this)" onblur="onCKBlur(this)" />';
