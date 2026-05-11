@@ -1064,7 +1064,7 @@ function renderT1() {
       html+='<td class="cell-txe-sp-'+safepe+' v-xe">'+fmtOrZero(xesl*dgxe)+'</td>';
       html+='<td colspan="2" class="v-mute" style="text-align:center">—</td>';
       html+='<td class="cell-tong-sp-'+safepe+' v-tong">'+fmtOrZero(xesl*dgxe)+'</td>';
-      html+='<td class="cell-action-sp-'+safepe+'">'+(anyXe?'<button class="btn-luu" onclick="luuMotPhong(''+pe+'')">Lưu</button>':'')+'</td>';
+      html+='<td class="cell-action-sp-'+safepe+'">'+( anyXe ? '<button class="btn-luu" onclick="luuMotPhong(&quot;'+pe.replace(/"/g,'\\"')+ '&quot;)">Lưu</button>' : '')+'</td>';
       html+='</tr>';
       return;
     }
@@ -1098,7 +1098,7 @@ function renderT1() {
     html+='<td><input class="ic md'+(STATE.editedCells[r.phong+'_phi_khac']!==undefined?' changed':'')+'" type="text" inputmode="numeric" value="'+(phk?phk.toLocaleString('vi-VN'):'')+'" placeholder="0" data-phong="'+pe+'" data-field="phi_khac" oninput="onEditCell(this)" onfocus="this.select()" onblur="onBlurCell(this)" /></td>';
     html+='<td><input class="ic lg'+(STATE.editedCells[r.phong+'_gia_phong']!==undefined?' changed':'')+'" type="text" inputmode="numeric" value="'+gp.toLocaleString('vi-VN')+'" data-phong="'+pe+'" data-field="gia_phong" oninput="onEditCell(this)" onfocus="this.select()" onblur="onBlurCell(this)" /></td>';
     html+='<td class="cell-tong v-tong">'+fmtOrZero(tong)+'</td>';
-    html+='<td class="cell-action">'+(anyChanged?'<button class="btn-luu" onclick="luuMotPhong(''+pe+'')">Lưu</button>':'')+'</td>';
+    html+='<td class="cell-action">'+( anyChanged ? '<button class="btn-luu" onclick="luuMotPhong(&quot;'+pe.replace(/"/g,'\\"')+ '&quot;)">Lưu</button>' : '')+'</td>';
     html+='</tr>';
   });
   document.getElementById('p1-tbody').innerHTML=html;
@@ -1118,8 +1118,7 @@ function onEditCell(el) {
     var tongEl=document.querySelector('.cell-tong-sp-'+safepe);
     var actEl=document.querySelector('.cell-action-sp-'+safepe);
     if(txeEl) txeEl.textContent=fmtOrZero(xesl*dgxe);
-    if(tongEl) tongEl.textContent=fmtOrZero(xesl*dgxe);
-    if(actEl) actEl.innerHTML='<button class="btn-luu" onclick="luuMotPhong(''+phong.replace(/'/g,"\\'")+'\')">Lưu</button>';
+    if(actEl) actEl.innerHTML='<button class="btn-luu" onclick="luuMotPhong(&quot;'+phong.replace(/"/g,'&quot;')+'&quot;)">Lưu</button>';
   } else {
     capNhatHangPhong(phong);
   }
@@ -1150,7 +1149,7 @@ function capNhatHangPhong(phong) {
   var tieu=moi>r.dien_cu?moi-r.dien_cu:0;
   var tdien=tieu*dgd,tnuoc=sn*dgn,txe=xesl*dgxe;
   var tong=tdien+tnuoc+pdv+txe+phk+gp+(r.no_cu||0);
-  var tr=document.querySelector('tr[data-phong="'+phong.replace(/\\/g,'\\\\').replace(/"/g,'\\"')+'"]');
+  var tr=document.querySelector('tr[data-phong="'+phong.replace(/"/g,'&quot;')+'"]');
   if(!tr) return;
   var ct=tr.querySelector('.cell-tieu'); if(ct){ct.textContent=tieu?tieu+' số':'—';ct.className='cell-tieu '+(tieu?'v-elec':'v-mute');}
   var cd=tr.querySelector('.cell-tdien'); if(cd) cd.textContent=fmtOrZero(tdien);
@@ -1159,7 +1158,7 @@ function capNhatHangPhong(phong) {
   var cx=tr.querySelector('.cell-txe'); if(cx) cx.textContent=fmtOrZero(txe);
   var co=tr.querySelector('.cell-tong'); if(co) co.textContent=fmtOrZero(tong);
   var anyChanged=['dien_moi','so_nguoi','don_gia_dien','don_gia_nuoc','phi_dv','xe_sl','phi_khac','gia_phong'].some(function(f){return STATE.editedCells[r.phong+'_'+f]!==undefined;});
-  var ca=tr.querySelector('.cell-action'); if(ca) ca.innerHTML=anyChanged?'<button class="btn-luu" onclick="luuMotPhong(''+esc(r.phong)+'')">Lưu</button>':'';
+  var ca=tr.querySelector('.cell-action'); if(ca) ca.innerHTML=anyChanged?'<button class="btn-luu" onclick="luuMotPhong(&quot;'+esc(r.phong)+'&quot;)">Lưu</button>':'';  
   var dot=tr.querySelector('.dot'); if(dot) dot.className='dot '+(moi>0?'dot-g':'dot-a');
 }
 
