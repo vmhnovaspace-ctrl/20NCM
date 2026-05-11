@@ -760,7 +760,7 @@ tr:hover td{background:#F8FBFF}
 <div class="toast" id="toast"></div>
 
 <script>
-var API_URL = 'https://script.google.com/macros/s/AKfycbwVz_TYNdBTjbLNCwfkaVSGlgL_Jc-UZRXWw6sDe2tOA-f9befJCDMsKeE5U9ZLoDgW/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycbyprqqcNb59WkO2CwLzJ-z5xda55tMDEIvoJPalYwJF158IQgUd3qWLHNfnxxuheMEF/exec';
 var SECRET_KEY = 'hhhome2026';
 var CACHE_KEY = 'hhhome_cache_v19';
 var CACHE_TTL = 5 * 60 * 1000; // 5 phút
@@ -1028,6 +1028,8 @@ function doiTabT1(t) {
 var CHI_PHI_PHONG = ['nhà','điện','bảo vệ','kv','hh','a phi ml','tạp vụ','rác'];
 // Hàng đặc biệt: hiển thị ở Quản lý nhưng chỉ có cột Xe máy
 var SPECIAL_ROWS = ['xe lẻ','bãi xe hồng'];
+var TONG_ROW = 'tổng';
+function isTongRow(phong) { return String(phong).trim().toLowerCase() === TONG_ROW; }
 function isSpecialRow(phong) {
   return SPECIAL_ROWS.indexOf(String(phong).trim().toLowerCase()) >= 0;
 }
@@ -1046,7 +1048,6 @@ function renderT1() {
   var q=(document.getElementById('p1-search').value||'').toLowerCase();
   var rows=STATE.rows.filter(function(r){
     if(isChiPhiRow(r.phong)) return false; // lọc dòng chi phí
-    if(String(r.phong).trim()==='TỔNG') return false; // lọc dòng tổng
     if(q&&r.phong.toLowerCase().indexOf(q)<0) return false;
     var m=STATE.editedCells[r.phong+'_dien_moi']!==undefined?STATE.editedCells[r.phong+'_dien_moi']:r.dien_moi;
     if(STATE.tabT1==='chua'&&m>0) return false;
@@ -1070,6 +1071,21 @@ function renderT1() {
       html+='<td colspan="2" class="v-mute" style="text-align:center">—</td>';
       html+='<td class="cell-tong-sp-'+safepe+' v-tong">'+fmtOrZero(xesl*dgxe)+'</td>';
       html+='<td class="cell-action-sp-'+safepe+'">'+( anyXe ? '<button class="btn-luu" onclick="luuMotPhong(&quot;'+pe.replace(/"/g,'\\"')+ '&quot;)">Lưu</button>' : '')+'</td>';
+      html+='</tr>';
+      return;
+    }
+    if(isTongRow(r.phong)){
+      html+='<tr style="background:#FFF8E1;font-weight:bold" data-phong="'+pe+'">';
+      html+='<td class="l" style="color:var(--red)">'+pe+'</td>';
+      html+='<td>'+fmtOrZero(r.so_nguoi)+'</td>';
+      html+='<td colspan="5" class="v-mute" style="text-align:center">—</td>';
+      html+='<td colspan="2" style="text-align:right">'+fmtOrZero(r.t_nuoc)+'</td>';
+      html+='<td colspan="2" style="text-align:right">'+fmtOrZero(r.phi_dv)+'</td>';
+      html+='<td>'+fmtOrZero(r.xe_sl)+'</td>';
+      html+='<td class="v-xe">'+fmtOrZero(r.t_xe)+'</td>';
+      html+='<td colspan="2" class="v-mute" style="text-align:center">—</td>';
+      html+='<td class="v-tong" style="font-size:13px">'+fmtOrZero(r.tong_cong)+'</td>';
+      html+='<td></td>';
       html+='</tr>';
       return;
     }
