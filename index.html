@@ -760,7 +760,7 @@ tr:hover td{background:#F8FBFF}
 <div class="toast" id="toast"></div>
 
 <script>
-var API_URL = 'https://script.google.com/macros/s/AKfycbyprqqcNb59WkO2CwLzJ-z5xda55tMDEIvoJPalYwJF158IQgUd3qWLHNfnxxuheMEF/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycbyUxFB_NgzeZZ3mYbuX3p3-QJcjmbJHYbYkfUCdLmxssyteD44uNgDCIkZ-IGQ2tCc/exec';
 var SECRET_KEY = 'hhhome2026';
 var CACHE_KEY = 'hhhome_cache_v19';
 var CACHE_TTL = 5 * 60 * 1000; // 5 phút
@@ -1075,15 +1075,19 @@ function renderT1() {
       return;
     }
     if(isTongRow(r.phong)){
-      html+='<tr style="background:#FFF8E1;font-weight:bold" data-phong="'+pe+'">';
+      html+='<tr style="background:#FFF8E1;font-weight:bold;border-top:2px solid #E0A000" data-phong="'+pe+'">';
       html+='<td class="l" style="color:var(--red)">'+pe+'</td>';
       html+='<td>'+fmtOrZero(r.so_nguoi)+'</td>';
-      html+='<td colspan="5" class="v-mute" style="text-align:center">—</td>';
-      html+='<td colspan="2" style="text-align:right">'+fmtOrZero(r.t_nuoc)+'</td>';
-      html+='<td colspan="2" style="text-align:right">'+fmtOrZero(r.phi_dv)+'</td>';
-      html+='<td>'+fmtOrZero(r.xe_sl)+'</td>';
+      html+='<td colspan="4" class="v-mute" style="text-align:center">—</td>';
+      html+='<td class="v-tdien">'+fmtOrZero(r.t_dien)+'</td>';
+      html+='<td class="v-mute" style="text-align:center">—</td>';
+      html+='<td class="v-water">'+fmtOrZero(r.t_nuoc)+'</td>';
+      html+='<td class="v-mute" style="text-align:center">—</td>';
+      html+='<td>'+fmtOrZero(r.phi_dv)+'</td>';
+      html+='<td class="v-mute" style="text-align:center">—</td>';
       html+='<td class="v-xe">'+fmtOrZero(r.t_xe)+'</td>';
-      html+='<td colspan="2" class="v-mute" style="text-align:center">—</td>';
+      html+='<td>'+fmtOrZero(r.phi_khac)+'</td>';
+      html+='<td>'+fmtOrZero(r.gia_phong)+'</td>';
       html+='<td class="v-tong" style="font-size:13px">'+fmtOrZero(r.tong_cong)+'</td>';
       html+='<td></td>';
       html+='</tr>';
