@@ -760,7 +760,7 @@ tr:hover td{background:#F8FBFF}
 <div class="toast" id="toast"></div>
 
 <script>
-var API_URL = 'https://script.google.com/macros/s/AKfycby3aspZHeATPuP6X98yD45gAXrChn9CRa_1ipAd7HByV-wjD6FUYd7xW1e6KtW4Gqx2/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycbzwPVa1zPILUwZSePVThm8qp9QRrca0cwskuECDP8IiKyEfXtG0unB-TMpODkp_IZ58/exec';
 var SECRET_KEY = 'hhhome2026';
 var CACHE_KEY = 'hhhome_cache_v19';
 var CACHE_TTL = 5 * 60 * 1000; // 5 phút
@@ -1027,12 +1027,16 @@ function doiTabT1(t) {
 // Các dòng chi phí không hiển thị ở trang 1
 var CHI_PHI_PHONG = ['nhà','điện','bảo vệ','kv','hh','a phi ml','tạp vụ','rác'];
 // Hàng đặc biệt: hiển thị ở Quản lý nhưng chỉ có cột Xe máy
-var SPECIAL_ROWS = ['xe lẻ','bãi xe hồng','tổng','mb'];
+var SPECIAL_ROWS = ['xe lẻ','bãi xe hồng'];
 function isSpecialRow(phong) {
   return SPECIAL_ROWS.indexOf(String(phong).trim().toLowerCase()) >= 0;
 }
 function isChiPhiRow(phong) {
-  return CHI_PHI_PHONG.indexOf(String(phong).trim().toLowerCase()) >= 0;
+  if (CHI_PHI_PHONG.indexOf(String(phong).trim().toLowerCase()) >= 0) return true;
+  // Kiểm tra cột "Loại" từ API data (cho chi phí mới thêm như maa, son...)
+  var row = (STATE.rows||[]).find(function(r){ return r.phong === phong; });
+  if (row && String(row.loai||'').trim().toLowerCase() === 'chiphi') return true;
+  return false;
 }
 
 function renderT1() {
@@ -1042,6 +1046,7 @@ function renderT1() {
   var q=(document.getElementById('p1-search').value||'').toLowerCase();
   var rows=STATE.rows.filter(function(r){
     if(isChiPhiRow(r.phong)) return false; // lọc dòng chi phí
+    if(String(r.phong).trim()==='TỔNG') return false; // lọc dòng tổng
     if(q&&r.phong.toLowerCase().indexOf(q)<0) return false;
     var m=STATE.editedCells[r.phong+'_dien_moi']!==undefined?STATE.editedCells[r.phong+'_dien_moi']:r.dien_moi;
     if(STATE.tabT1==='chua'&&m>0) return false;
@@ -1059,7 +1064,7 @@ function renderT1() {
       var safepe=r.phong.replace(/[^a-zA-Z0-9]/g,'_');
       html+='<tr style="background:var(--bg-app);opacity:0.85" data-phong="'+pe+'">';
       html+='<td class="l"><div class="phong-badge"><span class="dot dot-a"></span>'+pe+'</div></td>';
-      html+='<td colspan="9" class="v-mute" style="text-align:center;font-size:11px;padding:4px">—</td>';
+      html+='<td colspan="10" class="v-mute" style="text-align:center;font-size:11px;padding:4px">—</td>';
       html+='<td><input class="ic sm'+(anyXe?' changed':'')+'" type="text" inputmode="numeric" value="'+xesl+'" data-phong="'+pe+'" data-field="xe_sl" oninput="onEditCell(this)" onfocus="this.select()" onblur="onBlurCell(this)" /></td>';
       html+='<td class="cell-txe-sp-'+safepe+' v-xe">'+fmtOrZero(xesl*dgxe)+'</td>';
       html+='<td colspan="2" class="v-mute" style="text-align:center">—</td>';
