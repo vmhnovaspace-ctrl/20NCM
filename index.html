@@ -760,7 +760,7 @@ tr:hover td{background:#F8FBFF}
 <div class="toast" id="toast"></div>
 
 <script>
-var API_URL = 'https://script.google.com/macros/s/AKfycbzRKbor6H2lg_znhCCwH5QhCxZXzIjdALg_q97t_OE6-mN5JQ7o0gUILQ7JweS4pfNV/exec';
+var API_URL = 'https://script.google.com/macros/s/AKfycbxjOXC0flnibt9fByPCn6kkQggiF95ValLMYxEX7LZyBv_NhDjAhqCWzr_nlGFtmpou/exec';
 var SECRET_KEY = 'hhhome2026';
 var CACHE_KEY = 'hhhome_cache_v19';
 var CACHE_TTL = 5 * 60 * 1000; // 5 phút
@@ -1492,7 +1492,18 @@ async function hoanTacThu(idx) {
 
 function moZalo(idx){ var r=STATE.rows[idx]; var link=getLinkHD(r.phong); if(link) navigator.clipboard.writeText(link).catch(function(){}); window.open('https://zalo.me/'+r.sdt,'_blank'); showToast('Mở Zalo · Link đã copy'); }
 function getLinkHD(phong){ var t=STATE.tokens.find(function(x){return x.phong===phong;}); return t?t.link:null; }
-function copyHD(phong){ var link=getLinkHD(phong); if(!link){showToast('⚠️ Chưa tạo token tháng này');return;} navigator.clipboard.writeText(link).then(function(){showToast('Đã copy link HĐ P.'+phong+' ✓');}); }
+function copyHD(phong){
+  var link=getLinkHD(phong);
+  if(!link){showToast('⚠️ Chưa tạo token tháng này');return;}
+  var ta=document.createElement('textarea');
+  ta.value=link;
+  ta.style.position='fixed';ta.style.top='-9999px';ta.style.left='-9999px';
+  document.body.appendChild(ta);
+  ta.focus();ta.select();
+  try{document.execCommand('copy');showToast('Đã copy link HĐ P.'+phong+' ✓');}
+  catch(e){showToast('❌ Không copy được');}
+  document.body.removeChild(ta);
+}
 
 function capNhatStatsT3() {
   var rows=STATE.rows.filter(function(r){return !isChiPhiRow(r.phong);});
@@ -1636,11 +1647,27 @@ async function xacNhanQt() {
   else if(action==='fixpending'){ showToast('Đang sửa pending...'); var res=await api('suaPending'); showToast(res.ok?'✅ '+res.msg:'❌ '+res.msg); if(res.ok) await taiPending(); }
 }
 
-async function copyTatCaLink() {
+function copyTatCaLink() {
   if(!STATE.tokens.length){ showToast('⚠️ Chưa có token. Tạo token trước.'); return; }
-  var text=STATE.tokens.map(function(t){return 'Phòng '+t.phong+': '+t.link;}).join('\n');
-  await navigator.clipboard.writeText(text);
-  showToast('Đã copy '+STATE.tokens.length+' link ✓');
+  // Lấy base URL (bỏ ?p=...&t=...) → link trang tra cứu chung
+  var anyLink=STATE.tokens[0].link||'';
+  var baseUrl=anyLink.split('?')[0];
+  if(!baseUrl){ showToast('❌ Không tìm thấy link'); return; }
+  var ta=document.createElement('textarea');
+  ta.value=baseUrl;
+  ta.style.position='fixed';
+  ta.style.top='-9999px';
+  ta.style.left='-9999px';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try{
+    document.execCommand('copy');
+    showToast('Đã copy link tra cứu HĐ ✓');
+  }catch(e){
+    showToast('❌ Không copy được, thử lại');
+  }
+  document.body.removeChild(ta);
 }
 
 // ===== ĐÓNG MODAL KHI CLICK NGOÀI =====
